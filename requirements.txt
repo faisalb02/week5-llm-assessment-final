@@ -1,0 +1,9 @@
+openai
+python-dotenv
+fastapi
+uvicorn
+tiktoken
+tenacity
+pytest
+pytest-cov
+httpx
