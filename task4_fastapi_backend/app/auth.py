@@ -3,7 +3,7 @@ import secrets
 from fastapi import Depends, HTTPException
 from fastapi.security import APIKeyHeader
 
-from app.config import settings
+from app.dependencies import get_settings
 
 
 api_key_header = APIKeyHeader(
@@ -13,7 +13,8 @@ api_key_header = APIKeyHeader(
 
 
 def verify_api_key(
-    api_key: str = Depends(api_key_header)
+    api_key: str = Depends(api_key_header),
+    config=Depends(get_settings)
 ):
     if api_key is None:
         raise HTTPException(
@@ -23,7 +24,7 @@ def verify_api_key(
 
     if not secrets.compare_digest(
         api_key,
-        settings.API_KEY
+        config.API_KEY
     ):
         raise HTTPException(
             status_code=403,
